@@ -1,10 +1,6 @@
 import * as React from 'react';
 
 import Layout from '@/components/layout/Layout';
-import ArrowLink from '@/components/links/ArrowLink';
-import ButtonLink from '@/components/links/ButtonLink';
-import CustomLink from '@/components/links/CustomLink';
-import UnstyledLink from '@/components/links/UnstyledLink';
 import Seo from '@/components/Seo';
 
 // !STARTERCONF -> Select !STARTERCONF and CMD + SHIFT + F
@@ -12,6 +8,70 @@ import Seo from '@/components/Seo';
 // to customize the default configuration.
 
 export default function HomePage() {
+  const positionMoment = [
+    {
+      name: 'Binance',
+      coins: {
+        SOL: 2.00613086,
+        ETH: 0.07625583,
+        ADA: 236.44102552,
+        BTC: 0.0043,
+        CAKE: 16.30831694,
+        MANA: 28.33374889,
+        RAY: 11.81355842,
+        AVAX: 0.78771455,
+      },
+    },
+    {
+      name: 'Metamask Wallet - Binance Smart Chain',
+      coins: {
+        BNB: 0.00205,
+        CAKE: 0.05541,
+        MARSRISE: 2567415794.04772,
+      },
+    },
+    {
+      name: 'PancakeSwap Spot',
+      coins: {
+        CAKE: 31.92846,
+      },
+    },
+    {
+      name: 'PancakeSwap Farm',
+      coins: {
+        'CAKE-BNB': 0.002,
+      },
+    },
+  ];
+
+  const prices = {
+    SOL: 262.04 / 2.00613086,
+    ETH: 315.44 / 0.07625583,
+    ADA: 307.06 / 236.44102552,
+    BTC: 207.75 / 0.0043,
+    CAKE: 186.73 / 16.30831694,
+    MANA: 98.22 / 28.33374889,
+    RAY: 97.26 / 11.81355842,
+    AVAX: 70.76 / 0.78771455,
+    'CAKE-BNB': 0.4 / 0.002,
+    BNB: 1.19 / 0.00205,
+    MARSRISE: 10.45 / 2567415794.04772,
+  };
+
+  const getPrice = (coin: string) => {
+    return prices[coin];
+  };
+  const getTotal = (positionMoment) => {
+    return positionMoment.reduce((acc, curr) => {
+      return (
+        acc +
+        Object.keys(curr.coins).reduce(
+          (ac, key) => ac + getPrice(key) * curr.coins[key],
+          0
+        )
+      );
+    }, 0);
+  };
   return (
     <Layout>
       {/* <Seo templateTitle='Home' /> */}
@@ -19,41 +79,40 @@ export default function HomePage() {
 
       <main>
         <section className='bg-white'>
-          <div className='layout flex flex-col justify-center items-center min-h-screen text-center'>
-            <h1>Next.js + Tailwind CSS + TypeScript Starter</h1>
-            <p className='mt-2 text-sm text-gray-800'>
-              A starter for Next.js, Tailwind CSS, and TypeScript with Absolute
-              Import, Seo, Link component, pre-configured with Husky{' '}
-            </p>
-            <p className='mt-2 text-sm text-gray-700'>
-              <ArrowLink href='https://github.com/theodorusclarence/ts-nextjs-tailwind-starter'>
-                See the repository
-              </ArrowLink>
-            </p>
+          <div className=''>
+            {positionMoment.map((item, index) => (
+              <div
+                className='flex relative flex-col p-4 m-4 rounded border border-black'
+                key={index}
+              >
+                <h6 className='absolute -top-2 left-2 px-2 font-bold bg-white'>
+                  {item.name}
+                </h6>
+                <table>
+                  <tr>
+                    <th>Coin</th>
+                    <th>Value</th>
+                    <th>Subtotal</th>
+                  </tr>
 
-            <ButtonLink className='mt-6' href='/components' variant='light'>
-              See all components
-            </ButtonLink>
-
-            <UnstyledLink
-              href='https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Ftheodorusclarence%2Fts-nextjs-tailwind-starter'
-              className='mt-4'
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                width='92'
-                height='32'
-                src='https://vercel.com/button'
-                alt='Deploy with Vercel'
-              />
-            </UnstyledLink>
-
-            <footer className='absolute bottom-2 text-gray-700'>
-              © {new Date().getFullYear()} By{' '}
-              <CustomLink href='https://theodorusclarence.com?ref=tsnextstarter'>
-                Theodorus Clarence
-              </CustomLink>
-            </footer>
+                  {Object.keys(item.coins).map((key: string, index) => (
+                    <tr key={index}>
+                      <td className='text-center'>{key}</td>
+                      <td className='text-center'>
+                        {item.coins[key].toFixed(8) as string}
+                      </td>
+                      <td className='text-right'>
+                        {(getPrice(key) * item.coins[key]).toFixed(2)}
+                      </td>
+                    </tr>
+                  ))}
+                </table>
+              </div>
+            ))}
+            <div className='flex relative flex-col p-4 m-4 rounded border-2 border-black border-dotted'>
+              <strong>TOTAL:</strong>
+              <span>{getTotal(positionMoment)}</span>
+            </div>
           </div>
         </section>
       </main>
