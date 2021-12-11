@@ -45,19 +45,21 @@ export default function HomePage() {
     },
   ];
 
-  const getPrice = (coin: string) => prices?.find((p) => p.symbol === coin.toLocaleLowerCase())?.current_price ?? {
-    SOL: 262.04 / 2.00613086,
-    ETH: 315.44 / 0.07625583,
-    ADA: 307.06 / 236.44102552,
-    BTC: 207.75 / 0.0043,
-    CAKE: 186.73 / 16.30831694,
-    MANA: 98.22 / 28.33374889,
-    RAY: 97.26 / 11.81355842,
-    AVAX: 70.76 / 0.78771455,
-    'CAKE-BNB': 0.4 / 0.002,
-    BNB: 1.19 / 0.00205,
-    MARSRISE: 10.45 / 2567415794.04772,
-  }[coin];
+  const getPrice = (coin) =>
+    prices?.find((p) => p.symbol === coin.toLocaleLowerCase())?.current_price ??
+    {
+      SOL: 262.04 / 2.00613086,
+      ETH: 315.44 / 0.07625583,
+      ADA: 307.06 / 236.44102552,
+      BTC: 207.75 / 0.0043,
+      CAKE: 186.73 / 16.30831694,
+      MANA: 98.22 / 28.33374889,
+      RAY: 97.26 / 11.81355842,
+      AVAX: 70.76 / 0.78771455,
+      'CAKE-BNB': 0.4 / 0.002,
+      BNB: 1.19 / 0.00205,
+      MARSRISE: 10.45 / 2567415794.04772,
+    }[coin];
   const getTotal = (positionMoment) => {
     return positionMoment.reduce((acc, curr) => {
       return (
@@ -70,10 +72,10 @@ export default function HomePage() {
     }, 0);
   };
   useEffect(() => {
-    fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd")
-      .then(response => response.json())
-      .then(data => setPrices(data))
-  }, [])
+    fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd')
+      .then((response) => response.json())
+      .then((data) => setPrices(data));
+  }, []);
 
   return (
     <Layout>
@@ -98,11 +100,11 @@ export default function HomePage() {
                     <th>Subtotal</th>
                   </tr>
 
-                  {Object.keys(item.coins).map((key: string, index) => (
+                  {Object.keys(item.coins).map((key, index) => (
                     <tr key={index}>
                       <td className='text-center'>{key}</td>
                       <td className='text-center'>
-                        {item.coins[key].toFixed(8) as string}
+                        {item.coins[key].toFixed(8)}
                       </td>
                       <td className='text-right'>
                         {(getPrice(key) * item.coins[key]).toFixed(2)}
