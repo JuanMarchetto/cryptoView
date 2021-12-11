@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
@@ -8,6 +8,7 @@ import Seo from '@/components/Seo';
 // to customize the default configuration.
 
 export default function HomePage() {
+  const [prices, setPrices] = useState([]);
   const positionMoment = [
     {
       name: 'Binance',
@@ -44,7 +45,7 @@ export default function HomePage() {
     },
   ];
 
-  const prices = {
+  const getPrice = (coin: string) => prices?.find((p) => p.symbol === coin.toLocaleLowerCase())?.current_price ?? {
     SOL: 262.04 / 2.00613086,
     ETH: 315.44 / 0.07625583,
     ADA: 307.06 / 236.44102552,
@@ -56,11 +57,7 @@ export default function HomePage() {
     'CAKE-BNB': 0.4 / 0.002,
     BNB: 1.19 / 0.00205,
     MARSRISE: 10.45 / 2567415794.04772,
-  };
-
-  const getPrice = (coin: string) => {
-    return prices[coin];
-  };
+  }[coin];
   const getTotal = (positionMoment) => {
     return positionMoment.reduce((acc, curr) => {
       return (
@@ -72,6 +69,12 @@ export default function HomePage() {
       );
     }, 0);
   };
+  useEffect(() => {
+    fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd")
+      .then(response => response.json())
+      .then(data => setPrices(data))
+  }, [])
+
   return (
     <Layout>
       {/* <Seo templateTitle='Home' /> */}
