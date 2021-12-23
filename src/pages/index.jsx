@@ -13,14 +13,14 @@ export default function HomePage() {
     {
       name: 'Binance',
       coins: {
-        SOL: 2.00613086,
-        ETH: 0.07625583,
-        ADA: 236.44102552,
-        BTC: 0.0043,
-        CAKE: 16.30831694,
-        MANA: 28.33374889,
-        RAY: 11.81355842,
-        AVAX: 0.78771455,
+        BTC: 0.00632920,
+        ETH: 0.07,
+        ADA: 140,
+        SOL: 1,
+        MATIC: 43,
+        CKB: 5113.8841,
+        LUNA: 1.04452824,
+        MANA: 8
       },
     },
     {
@@ -34,13 +34,37 @@ export default function HomePage() {
     {
       name: 'PancakeSwap Spot',
       coins: {
-        CAKE: 31.92846,
+        CAKE: 32.57793,
       },
     },
     {
       name: 'PancakeSwap Farm',
       coins: {
         'CAKE-BNB': 0.002,
+      },
+    },
+    {
+      name: 'Metamask Wallet - Avalanche Network',
+      coins: {
+        AVAX: 0.0068,
+      },
+    },
+    {
+      name: 'Olimpus DAO',
+      coins: {
+        gOHM: 0.04004878
+      }
+    },
+    {
+      name: 'Trade Joe',
+      coins: {
+        'gOHM-AVAX': 0.04407,
+      },
+    },
+    {
+      name: 'Wonderland DAO',
+      coins: {
+        MEMO: 0.058695,
       },
     },
   ];
@@ -58,8 +82,12 @@ export default function HomePage() {
       AVAX: 70.76 / 0.78771455,
       'CAKE-BNB': 0.4 / 0.002,
       BNB: 1.19 / 0.00205,
-      MARSRISE: 10.45 / 2567415794.04772,
-    }[coin];
+      MARSRISE: 8.45 / 2567415794.04772,
+      'gOHM-AVAX': 147.37 / 0.04407,
+      gOHM: 87.79 / 0.04004878,
+      MEMO: 4336.92,
+      CKB: 0.021869,
+    }[coin] ?? 0;
   const getTotal = (positionMoment) => {
     return positionMoment.reduce((acc, curr) => {
       return (
@@ -96,7 +124,8 @@ export default function HomePage() {
                 <table>
                   <tr>
                     <th>Coin</th>
-                    <th>Value</th>
+                    <th>Cantidad</th>
+                    <th>Valor por unidad</th>
                     <th>Subtotal</th>
                   </tr>
 
@@ -106,7 +135,10 @@ export default function HomePage() {
                       <td className='text-center'>
                         {item.coins[key].toFixed(8)}
                       </td>
-                      <td className='text-right'>
+                      <td className='text-center'>
+                        {getPrice(key)}
+                      </td>
+                      <td className='text-center'>
                         {(getPrice(key) * item.coins[key]).toFixed(2)}
                       </td>
                     </tr>
@@ -115,8 +147,7 @@ export default function HomePage() {
               </div>
             ))}
             <div className='flex relative flex-col p-4 m-4 rounded border-2 border-black border-dotted'>
-              <strong>TOTAL:</strong>
-              <span>{getTotal(positionMoment)}</span>
+              <strong>TOTAL:</strong><span>{getTotal(positionMoment)}</span>
             </div>
           </div>
         </section>
