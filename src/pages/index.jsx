@@ -136,7 +136,7 @@ export default function HomePage() {
                         {item.coins[key].toFixed(8)}
                       </td>
                       <td className='text-center'>
-                        {getPrice(key)}
+                        {getPrice(key).toFixed(10)}
                       </td>
                       <td className='text-center'>
                         {(getPrice(key) * item.coins[key]).toFixed(2)}
